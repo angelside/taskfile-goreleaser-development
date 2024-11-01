@@ -1,0 +1,117 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+version: 2
+
+#project_name: my-project
+
+env_files:
+  github_token: ./.github_token # https://goreleaser.com/scm/github/
+
+git:
+  # Tags to be ignored by GoReleaser.
+  # This means that GoReleaser will not pick up tags that match any of the
+  # provided values as either previous or current tags.
+  ignore_tags:
+    - nightly
+
+before:
+  hooks:
+    - go mod tidy       # You may remove this if you don't use go modules
+    - go generate ./... # You may remove this if you don't need go generate
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    # GOOS list to build for.
+    # Default: ['darwin', 'linux', 'windows']
+    goos:
+      - linux
+      - windows
+      #- darwin
+    # GOARCH to build for.
+    # Default: ['386', 'amd64', 'arm64']
+    goarch:
+      - amd64
+      #- arm64
+    # Path to main.go file or main package.
+    # Notice: when used with `gomod.proxy`, this must be a package.
+    #
+    # Default is `.`.
+    main: . # In subdir: ./cmd/.
+    ldflags:
+      - -s -w
+      #- -s -w -X app/cmd/build.AppName={{.ProjectName}} -X app/cmd/build.Version={{.Version}} -X app/cmd/build.Commit={{.Commit}} -X app/cmd/build.Date={{.Date}} -X main.builtBy=goreleaser
+
+# Configuration for building packages for rpm and deb package managers
+#nfpms:
+#  - package_name: my-project # ANGELSIDE: not-automated ??
+#    homepage: https://github.com/angelside/goreleaser-test2
+#    maintainer: angelside <me@local.host>
+#    description: |-
+#            Test application.
+#    formats:
+#      - rpm
+#      - deb
+
+archives:
+  - format: tar.gz
+    # this name template makes the OS and Arch compatible with the results of `uname`.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    format_overrides:
+      - goos: windows
+        format: zip
+    # Additional files/globs you want to add to the archive.
+    #
+    # Default: ['LICENSE*', 'README*', 'CHANGELOG', 'license*', 'readme*', 'changelog']
+    # Templates: allowed
+    #files:
+    #  - LICENSE.txt
+    #  - README_{{.Os}}.md
+    #  - CHANGELOG.md
+    # - docs/*
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+# https://goreleaser.com/customization/release/#github
+release:
+  # Repo in which the release will be created.
+  # Default is extracted from the origin remote URL or empty if its private hosted.
+  github:
+    owner: angelside
+    name: goreleaser-test2
+  # If set to auto, will mark the release as not ready for production
+  # in case there is an indicator for this in the tag e.g. v1.0.0-rc1
+  # If set to true, will mark the release as not ready for production.
+  # Default is false.
+  prerelease: auto
+  # Header for the release body.
+  #
+  # Templates: allowed
+  header: |
+    ## {{ .ProjectName }} ({{ .Date }})
+
+    Welcome to this new release!
+  # Footer for the release body.
+  #
+  # Templates: allowed
+  #footer: |
+    ## Thanks
+
+  #  Those were the changes on {{ .Tag }}!

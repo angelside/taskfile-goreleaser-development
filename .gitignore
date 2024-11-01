@@ -1,0 +1,13 @@
+dist/
+bin/
+tmp/
+node_modules/
+__*
+
+*_templ.go
+
+.github_token
+.env
+
+.idea/
+.fleet/
