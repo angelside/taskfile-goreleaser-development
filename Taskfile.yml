@@ -245,5 +245,8 @@ tasks:
   tool:gosec:
     desc: Inspects go source codes for security problems.
     #cmd: gosec -no-fail -quiet ./...
-    cmd: gosec -no-fail ./...
+    cmds:
+      - echo '== Go security checker'
+      - echo
+      - gosec -no-fail ./...
     ignore_error: true
