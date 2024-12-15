@@ -227,6 +227,11 @@ tasks:
     desc: List available go upgrades for all dependencies.
     cmd: go list -m -u all
 
+  # Upgrade dependencies
+  tool:upgrade:
+    desc: Upgrade dependencies to the latest or minor patch release.
+    cmd: go get -u ./...
+
   # https://github.com/Boeing/config-file-validator
   tool:validate:
     desc: Validate all config files.
