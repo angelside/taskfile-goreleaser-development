@@ -169,7 +169,7 @@ tasks:
   ## === 🚩 OTHER ======================================================
 
   info:
-    desc: Taskfile variables.
+    desc: Info.
     cmds:
       - echo "OS = {{OS}}"
       - echo "ARCH = {{ARCH}}"
