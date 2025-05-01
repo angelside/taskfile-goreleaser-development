@@ -12,7 +12,7 @@
 
 ---
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
-version: "3"
+version: '3'
 silent: true
 
 ##
@@ -26,8 +26,8 @@ vars:
 
   ENTRY_POINT: . # ./cmd/. | ./src/.
   BUILD_DIR: __dist # dist, tmp, build, .bin, etc
-  BUILD_FILE: "./{{.BUILD_DIR}}/{{.BINARY_NAME}}"
-  RELEASE_FILE: "./{{.BUILD_DIR}}/release/{{.BINARY_NAME}}"
+  BUILD_FILE: './{{.BUILD_DIR}}/{{.BINARY_NAME}}'
+  RELEASE_FILE: './{{.BUILD_DIR}}/release/{{.BINARY_NAME}}'
 
   TASK_COMMAND: '{{if eq OS "windows"}}task{{else}}go-task{{end}}'
 
@@ -152,7 +152,6 @@ tasks:
       - echo "💥 Compressing the linux binary... >> {{.BUILD_FILE}}_upx"
       - upx -qq --best {{.BUILD_FILE}} -o {{.BUILD_FILE}}_upx
 
-
   ## === 💫 GO RELEASER ================================================
 
   # TODO: Need test
@@ -164,7 +163,6 @@ tasks:
   goreleaser:snapshot:
     desc: Release a version from snapshot with "goreleaser".
     cmd: goreleaser release --snapshot --clean
-
 
   ## === 🚩 OTHER ======================================================
 
@@ -217,7 +215,7 @@ tasks:
       BUILD_DATE:
         sh: date +%FT%T%z
       BUILD_INFO_LDFLAGS: -ldflags "-w -extldflags '"-static"' -X main.buildDate={{.BUILD_DATE}} -X main.version={{.COMMIT_HASH}}"
-    cmds: ["go build {{.BUILD_INFO_LDFLAGS}} -o bin/${APP_NAME} ./${APP_NAME}"]
+    cmds: ['go build {{.BUILD_INFO_LDFLAGS}} -o bin/${APP_NAME} ./${APP_NAME}']
 
   ## === 🧩 TOOLS ======================================================
 

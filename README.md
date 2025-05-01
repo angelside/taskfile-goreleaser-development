@@ -7,7 +7,7 @@
 
 > This is an internal tool designed to ???.
 
-> __Warning__ - Only Windows supported.
+> **Warning** - Only Windows supported.
 
 ### Tested on
 
@@ -19,10 +19,9 @@
 
 `task release`
 
-
 ### Third party tool dependencies for build compilation and release compilation
 
-* On windows
+- On windows
 
 ```powershell
 scoop install task
@@ -30,7 +29,7 @@ scoop install upx
 scoop install rcedit
 ```
 
-* On Arch linux
+- On Arch linux
 
 ```sh
 sudo pacman -S go-task
